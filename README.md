@@ -55,3 +55,40 @@ cat /var/log/syslog | ip-log-stats | awk '$1=$1;1' | cut -d" " -f2
 # Will output how many occurences were found in total
 cat /var/log/syslog | ip-log-stats | awk '$1=$1;1' | cut -d" " -f1 | awk '{ sum += $1 } END { print sum }'
 ```
+
+## Limitations
+
+This script was meant to be kinda dumb, the motivation was that it doesn't matter in which
+context an IP is found because often there can be many different applications and cases
+where something is reported and everything is reported in a different format, so the aim was
+to get a very simple statistic.
+
+As a result there are some things that are to be considered during usage:
+
+(These are not necessarily limitations but can also common reasons for misinterpretation)
+
+### Self-reporting / local IPs
+Obviously your own IP (the host IP of the syslog) will end up getting counted along all others
+this is due to the fact that you often get logs like this:
+
+```txt
+[Date] Accepted connection remote_ip:X.X.X.X local_ip:Y.Y.Y.Y
+```
+
+### False Detections
+Certain things in log messages sometimes look like an IP Address while they aren't an actual
+IP, the script will report it regardless, an example can be the Version number of the
+Browser reported in the User Agent of Webserver logs. So the User agent could contain
+something like `(Windows NT 10.0; Win64; x64) Chrome/128.0.0.0` where `128.0.0.0` would
+be falsely reported
+
+### Counting Interpretation
+Obviously the count of occurences counts how often an IP was found, it is hard to tell
+how many requests or connections any IP actually made using this script. For example
+if you have `fail2ban` set up, an IP may get reported twice or even more often just
+for one connection, because `fail2ban` also reports that it has found the IP and 
+for example banned it. Such things obviously increase the number this IP appears in your logs
+
+## Contributing
+
+Feel free to contribute through the usual ways (e.g. opening Issues or submitting Pull Requests)
