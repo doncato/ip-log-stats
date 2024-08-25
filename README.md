@@ -41,5 +41,5 @@ cat /var/log/syslog | ip-log-stats
 #### Email the Stats:
 ```sh
 # Will mail the results to webmaster@example.com with the subject stats
-cat /var/log/syslog | (echo "From: monitor@example.com"; echo "To: webmaster@example.com"; echo "Subject: IP Log Stats"; echo ""; ip-log-stats) | sendmail -F "IP Log Stats <monitor@example.com>" webmaster@example.com
+cat /var/log/syslog | (echo "From: IP Log Stats <monitor@example.com>"; echo "To: postmaster@example.com"; echo "Subject: IP Log Stats"; echo ""; ip-log-stats) | sendmail -F "IP Log Stats <monitor@example.com>" postmaster@example.com
 ```
