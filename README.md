@@ -38,8 +38,20 @@ the number of occurences followed by the ip like this:
 cat /var/log/syslog | ip-log-stats
 ```
 
-#### Email the Stats:
+#### Email the stats:
 ```sh
 # Will mail the results to webmaster@example.com with the subject stats
 cat /var/log/syslog | (echo "From: IP Log Stats <monitor@example.com>"; echo "To: postmaster@example.com"; echo "Subject: IP Log Stats"; echo ""; ip-log-stats) | sendmail -F "IP Log Stats <monitor@example.com>" postmaster@example.com
+```
+
+#### Get only IPs
+```sh
+# Will filter to output to just print the ips without the count
+cat /var/log/syslog | ip-log-stats | awk '$1=$1;1' | cut -d" " -f2
+````
+
+#### Display total sum:
+```sh
+# Will output how many occurences were found in total
+cat /var/log/syslog | ip-log-stats | awk '$1=$1;1' | cut -d" " -f1 | awk '{ sum += $1 } END { print sum }'
 ```
