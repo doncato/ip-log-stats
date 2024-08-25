@@ -34,7 +34,7 @@ the number of occurences followed by the ip like this:
 ### Usage Examples
 #### Simple showoff
 ```sh
-# Will simple output the contents for human consumption
+# Will simply output the contents for human consumption
 cat /var/log/syslog | ip-log-stats
 ```
 
